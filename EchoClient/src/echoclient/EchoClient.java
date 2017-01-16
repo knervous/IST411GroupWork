@@ -9,18 +9,24 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class EchoClient {
+public class EchoClient implements Runnable{
 
-    public static void main(String[] args) {
-        try {
-            System.out.println("Waiting for connection.....");
+    public EchoClient()
+    {
+       
+    }
+    
+    @Override
+    public void run() {
+         try {
+            System.out.println("Client: Waiting for connection.....");
             InetAddress localAddress = InetAddress.getLocalHost();
-            Socket clientSocket = new Socket(localAddress, 6000);
+            Socket clientSocket = new Socket(localAddress, 6600);
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
             //<editor-fold desc="Ask for user input">
-            System.out.println("Connected to server");
+            System.out.println("Client: Connected to server");
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 System.out.print("Enter text: ");
