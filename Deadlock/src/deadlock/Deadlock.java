@@ -49,16 +49,13 @@ public class Deadlock {
     }
 
     static class MyLock extends ReentrantLock {
-
         MyLock() {
             super(true);
         }
-
         @Override
         protected Thread getOwner() {
             return super.getOwner(); //To change body of generated methods, choose Tools | Templates.
         }
-
     }
 
     abstract class ThreadParent {
@@ -92,22 +89,21 @@ public class Deadlock {
         @Override
         public void run() {
             try {
-                    while(!lOne || !lTwo){threadName = "Thread One";
+                    while(!exit){threadName = "Thread One";
                     status = "Attempting to access lock one";
-                    lOne = lockOne.tryLock();
+                    lockOne.lock();
+                    lOne = lockOne.isLocked();
                     status += lOne ? " - Lock one Accessed - " : " DEADLOCKED";
-                    Thread.sleep(200);
-                    if(lOne){
+                    Thread.sleep(2000);
                     status += " - Attempting to access lock two";
-                    lTwo = lockTwo.tryLock();
+                    lockTwo.lock();
+                    lTwo = lockTwo.isLocked();
                     status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
-                    Thread.sleep(200);
-                    while (!exit) {}}
-                    }  
+                        while(!exit){}
+                    }     
             } catch (InterruptedException z) {
                 z.printStackTrace();
             } finally {
-        
                 if(lOne) lockOne.unlock();
                 if(lTwo) lockTwo.unlock();
             }
@@ -118,26 +114,25 @@ public class Deadlock {
 
         @Override
         public void run() {
-
-            status = "";
-            threadName = "Thread Two";
-            status += "Attempting to access lock two";
-            lockTwo.lock();
-            status += "- Lock two accessed -";
             try {
-                Thread.sleep(200);
-                status += "\nAttempting to access lock one";
-                lockOne.lock();
-                status += "- Lock one accessed -";
+                    while(!exit){threadName = "Thread Two";
+                    status = "Attempting to access lock two";
+                    lockTwo.lock();
+                    lTwo = lockOne.isLocked();
+                    status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
+                    Thread.sleep(2000);
+                    status += " - Attempting to access lock one";
+                    lockOne.lock();
+                    lOne = lockOne.isLocked();
+                    status += lOne ? " - Lock one Accessed - " : " DEADLOCKED";
+                        while(!exit){}
+                    }     
             } catch (InterruptedException z) {
                 z.printStackTrace();
             } finally {
-                while (!exit) {
-                }
-                lockOne.unlock();
-                lockTwo.unlock();
+                if(lOne) lockOne.unlock();
+                if(lTwo) lockTwo.unlock();
             }
-
         }
     }
 
