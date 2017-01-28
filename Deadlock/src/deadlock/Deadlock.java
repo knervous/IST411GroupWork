@@ -12,7 +12,6 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -49,9 +48,11 @@ public class Deadlock {
     }
 
     static class MyLock extends ReentrantLock {
+
         MyLock() {
             super(true);
         }
+
         @Override
         protected Thread getOwner() {
             return super.getOwner(); //To change body of generated methods, choose Tools | Templates.
@@ -59,14 +60,14 @@ public class Deadlock {
     }
 
     abstract class ThreadParent {
+
         protected volatile boolean exit = false;
         protected String status = "";
         protected String threadName = "";
         protected boolean lOne = false;
         protected boolean lTwo = false;
-        
-        public boolean isDeadLock()
-        {
+
+        public boolean isDeadLock() {
             return (lOne && !lTwo) || (lTwo && !lOne);
         }
 
@@ -89,7 +90,8 @@ public class Deadlock {
         @Override
         public void run() {
             try {
-                    while(!exit){threadName = "Thread One";
+                while (!exit) {
+                    threadName = "Thread One";
                     status = "Attempting to access lock one";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
@@ -99,13 +101,18 @@ public class Deadlock {
                     lockTwo.lock();
                     lTwo = lockTwo.isLocked();
                     status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
-                        while(!exit){}
-                    }     
+                    while (!exit) {
+                    }
+                }
             } catch (InterruptedException z) {
                 z.printStackTrace();
             } finally {
-                if(lOne) lockOne.unlock();
-                if(lTwo) lockTwo.unlock();
+                if (lOne) {
+                    lockOne.unlock();
+                }
+                if (lTwo) {
+                    lockTwo.unlock();
+                }
             }
         }
     }
@@ -115,23 +122,29 @@ public class Deadlock {
         @Override
         public void run() {
             try {
-                    while(!exit){threadName = "Thread Two";
+                while (!exit) {
+                    threadName = "Thread Two";
                     status = "Attempting to access lock two";
                     lockTwo.lock();
-                    lTwo = lockOne.isLocked();
+                    lTwo = lockTwo.isLocked();
                     status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
                     Thread.sleep(2000);
                     status += " - Attempting to access lock one";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
                     status += lOne ? " - Lock one Accessed - " : " DEADLOCKED";
-                        while(!exit){}
-                    }     
+                    while (!exit) {
+                    }
+                }
             } catch (InterruptedException z) {
                 z.printStackTrace();
             } finally {
-                if(lOne) lockOne.unlock();
-                if(lTwo) lockTwo.unlock();
+                if (lOne) {
+                    lockOne.unlock();
+                }
+                if (lTwo) {
+                    lockTwo.unlock();
+                }
             }
         }
     }
@@ -151,13 +164,10 @@ public class Deadlock {
                 String tempTwo = lockTwo.getOwner() == null ? "None" : lockTwo.getOwner().getName();
                 g2d.drawString("Lock One State, Held By: " + tempOne, 50, 300);
                 g2d.drawString("Lock Two State, Held By: " + tempTwo, 50, 350);
-                if(taskOne != null && taskTwo != null)
-                {
-                    if(taskOne.isDeadLock() && taskTwo.isDeadLock())
-                {
-                    g2d.drawString("DEADLOCKED!",100,200);
-                    JDialog alert = new JDialog(new JFrame(),"DEADLOCKED!");
-                }
+                if (taskOne != null && taskTwo != null) {
+                    if (taskOne.isDeadLock() && taskTwo.isDeadLock()) {
+                        g2d.drawString("DEADLOCKED!", 100, 200);
+                    }
                 }
             }
         };
@@ -191,15 +201,13 @@ public class Deadlock {
                 }
             });
             stopOne.addActionListener((ActionEvent e) -> {
-                if(!taskOne.isDeadLock())
-                {
+                if (!taskOne.isDeadLock()) {
                     taskOne.stop();
                     taskOne = new TaskOne();
                 }
             });
             stopTwo.addActionListener((ActionEvent e) -> {
-                if(!taskTwo.isDeadLock())
-                {
+                if (!taskTwo.isDeadLock()) {
                     taskTwo.stop();
                     taskTwo = new TaskTwo();
                 }
