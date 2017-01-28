@@ -10,9 +10,9 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -22,12 +22,12 @@ import javax.swing.JPanel;
  */
 public class Deadlock {
 
-    static protected MyLock lockOne = new MyLock();
-    static protected MyLock lockTwo = new MyLock();
+    final static protected MyLock lockOne = new MyLock();
+    final static protected MyLock lockTwo = new MyLock();
     static protected Thread t1;
     static protected Thread t2;
-    static protected ThreadOne threadOne;
-    static protected ThreadTwo threadTwo;
+    static protected TaskOne taskOne;
+    static protected TaskTwo taskTwo;
 
     static protected GuiWindow window;
 
@@ -59,12 +59,16 @@ public class Deadlock {
     }
 
     abstract class ThreadParent {
-
         protected volatile boolean exit = false;
         protected String status = "";
         protected String threadName = "";
         protected boolean lOne = false;
         protected boolean lTwo = false;
+        
+        public boolean isDeadLock()
+        {
+            return (lOne && !lTwo) || (lTwo && !lOne);
+        }
 
         public String getThreadName() {
             return threadName;
@@ -78,13 +82,9 @@ public class Deadlock {
             exit = true;
         }
 
-        public void unlock(ReentrantLock l) {
-            l.unlock();
-        }
-
     }
 
-    static class ThreadOne extends ThreadParent implements Runnable {
+    static class TaskOne extends ThreadParent implements Runnable {
 
         @Override
         public void run() {
@@ -110,7 +110,7 @@ public class Deadlock {
         }
     }
 
-    static class ThreadTwo extends ThreadParent implements Runnable {
+    static class TaskTwo extends ThreadParent implements Runnable {
 
         @Override
         public void run() {
@@ -143,14 +143,22 @@ public class Deadlock {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
 
-                g2d.drawString(threadOne == null ? "" : threadOne.getThreadName(), 50, 50);
-                g2d.drawString(threadTwo == null ? "" : threadTwo.getThreadName(), 50, 100);
-                g2d.drawString(threadOne == null ? "" : threadOne.getStatus(), 50, 75);
-                g2d.drawString(threadTwo == null ? "" : threadTwo.getStatus(), 50, 125);
+                g2d.drawString(taskOne == null ? "" : taskOne.getThreadName(), 50, 50);
+                g2d.drawString(taskTwo == null ? "" : taskTwo.getThreadName(), 50, 100);
+                g2d.drawString(taskOne == null ? "" : taskOne.getStatus(), 50, 75);
+                g2d.drawString(taskTwo == null ? "" : taskTwo.getStatus(), 50, 125);
                 String tempOne = lockOne.getOwner() == null ? "None" : lockOne.getOwner().getName();
                 String tempTwo = lockTwo.getOwner() == null ? "None" : lockTwo.getOwner().getName();
                 g2d.drawString("Lock One State, Held By: " + tempOne, 50, 300);
                 g2d.drawString("Lock Two State, Held By: " + tempTwo, 50, 350);
+                if(taskOne != null && taskTwo != null)
+                {
+                    if(taskOne.isDeadLock() && taskTwo.isDeadLock())
+                {
+                    g2d.drawString("DEADLOCKED!",100,200);
+                    JDialog alert = new JDialog(new JFrame(),"DEADLOCKED!");
+                }
+                }
             }
         };
 
@@ -172,25 +180,29 @@ public class Deadlock {
             panel.setLayout(new FlowLayout());
             startOne.addActionListener((ActionEvent e) -> {
                 if (!t1.isInterrupted() && !t1.isAlive()) {
-                    t1 = new Thread(threadOne = new ThreadOne());
+                    t1 = new Thread(taskOne = new TaskOne());
                     t1.start();
                 }
-                panel.repaint();
             });
             startTwo.addActionListener((ActionEvent e) -> {
                 if (!t2.isInterrupted() && !t2.isAlive()) {
-                    t2 = new Thread(threadTwo = new ThreadTwo());
+                    t2 = new Thread(taskTwo = new TaskTwo());
                     t2.start();
                 }
-                panel.repaint();
             });
             stopOne.addActionListener((ActionEvent e) -> {
-                threadOne.stop();
-                threadOne = new ThreadOne();
+                if(!taskOne.isDeadLock())
+                {
+                    taskOne.stop();
+                    taskOne = new TaskOne();
+                }
             });
             stopTwo.addActionListener((ActionEvent e) -> {
-                threadTwo.stop();
-                threadTwo = new ThreadTwo();
+                if(!taskTwo.isDeadLock())
+                {
+                    taskTwo.stop();
+                    taskTwo = new TaskTwo();
+                }
             });
             toggleLockOne.addActionListener((ActionEvent e) -> {
                 if (lockOne.isLocked()) {
