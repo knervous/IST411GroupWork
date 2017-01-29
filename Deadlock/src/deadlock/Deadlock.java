@@ -5,8 +5,10 @@
  */
 package deadlock;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
@@ -66,10 +68,6 @@ public class Deadlock {
         protected String threadName = "";
         protected boolean lOne = false;
         protected boolean lTwo = false;
-
-        public boolean isDeadLock() {
-            return (lOne && !lTwo) || (lTwo && !lOne);
-        }
 
         public String getThreadName() {
             return threadName;
@@ -164,10 +162,13 @@ public class Deadlock {
                 String tempTwo = lockTwo.getOwner() == null ? "None" : lockTwo.getOwner().getName();
                 g2d.drawString("Lock One State, Held By: " + tempOne, 50, 300);
                 g2d.drawString("Lock Two State, Held By: " + tempTwo, 50, 350);
-                if (taskOne != null && taskTwo != null) {
-                    if (taskOne.isDeadLock() && taskTwo.isDeadLock()) {
-                        g2d.drawString("DEADLOCKED!", 100, 200);
-                    }
+                g2d.drawString("Thread 1 State: " + t1.getState(), 500, 300);
+                g2d.drawString("Thread 2 State: " + t2.getState(), 500, 350);
+                if (t1.getState() == Thread.State.WAITING && t2.getState() == Thread.State.WAITING) {
+                    Font f = new Font("MonoSpaced", 1, 30);
+                    g2d.setFont(f);
+                    g2d.setColor(Color.red);
+                    g2d.drawString("THREAD 1 AND 2 DEADLOCKED!", 200, 200);
                 }
             }
         };
@@ -201,16 +202,22 @@ public class Deadlock {
                 }
             });
             stopOne.addActionListener((ActionEvent e) -> {
-                if (!taskOne.isDeadLock()) {
-                    taskOne.stop();
-                    taskOne = new TaskOne();
+                if (taskOne != null) {
+                    if (t1.getState() != Thread.State.WAITING) {
+                        taskOne.stop();
+                        taskOne = new TaskOne();
+                    }
                 }
+
             });
             stopTwo.addActionListener((ActionEvent e) -> {
-                if (!taskTwo.isDeadLock()) {
-                    taskTwo.stop();
-                    taskTwo = new TaskTwo();
+                if (taskTwo != null) {
+                    if (t2.getState() != Thread.State.WAITING) {
+                        taskTwo.stop();
+                        taskTwo = new TaskTwo();
+                    }
                 }
+
             });
             toggleLockOne.addActionListener((ActionEvent e) -> {
                 if (lockOne.isLocked()) {
