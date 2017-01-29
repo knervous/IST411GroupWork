@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.locks.ReentrantLock;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,8 +28,8 @@ public class Deadlock {
     final static protected MyLock lockTwo = new MyLock();
     static protected Thread t1;
     static protected Thread t2;
-    static protected TaskOne taskOne;
-    static protected TaskTwo taskTwo;
+    static protected TaskOne taskOne = new TaskOne();
+    static protected TaskTwo taskTwo = new TaskTwo();
 
     static protected GuiWindow window;
 
@@ -50,11 +51,9 @@ public class Deadlock {
     }
 
     static class MyLock extends ReentrantLock {
-
         MyLock() {
             super(true);
         }
-
         @Override
         protected Thread getOwner() {
             return super.getOwner(); //To change body of generated methods, choose Tools | Templates.
@@ -64,14 +63,9 @@ public class Deadlock {
     abstract class ThreadParent {
 
         protected volatile boolean exit = false;
-        protected String status = "";
-        protected String threadName = "";
+        protected String status = "not started";
         protected boolean lOne = false;
         protected boolean lTwo = false;
-
-        public String getThreadName() {
-            return threadName;
-        }
 
         public String getStatus() {
             return status;
@@ -89,16 +83,15 @@ public class Deadlock {
         public void run() {
             try {
                 while (!exit) {
-                    threadName = "Thread One";
-                    status = "Attempting to access lock one";
+                    status = "Attempting to access lock one..";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
-                    status += lOne ? " - Lock one Accessed - " : " DEADLOCKED";
+                    status += lOne ? " Lock One Accessed - " : " DEADLOCKED";
                     Thread.sleep(2000);
-                    status += " - Attempting to access lock two";
+                    status += "Attempting to access lock two..";
                     lockTwo.lock();
                     lTwo = lockTwo.isLocked();
-                    status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
+                    status += lTwo ? " Lock Two Accessed" : " DEADLOCKED";
                     while (!exit) {
                     }
                 }
@@ -121,16 +114,15 @@ public class Deadlock {
         public void run() {
             try {
                 while (!exit) {
-                    threadName = "Thread Two";
-                    status = "Attempting to access lock two";
+                    status = "Attempting to access lock two..";
                     lockTwo.lock();
                     lTwo = lockTwo.isLocked();
-                    status += lTwo ? " - Lock two Accessed - " : " DEADLOCKED";
+                    status += lTwo ? " Lock Two Accessed - " : " DEADLOCKED";
                     Thread.sleep(2000);
-                    status += " - Attempting to access lock one";
+                    status += "Attempting to access lock one..";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
-                    status += lOne ? " - Lock one Accessed - " : " DEADLOCKED";
+                    status += lOne ? " Lock One Accessed" : " DEADLOCKED";
                     while (!exit) {
                     }
                 }
@@ -153,11 +145,11 @@ public class Deadlock {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
-
-                g2d.drawString(taskOne == null ? "" : taskOne.getThreadName(), 50, 50);
-                g2d.drawString(taskTwo == null ? "" : taskTwo.getThreadName(), 50, 100);
-                g2d.drawString(taskOne == null ? "" : taskOne.getStatus(), 50, 75);
-                g2d.drawString(taskTwo == null ? "" : taskTwo.getStatus(), 50, 125);
+                g2d.setFont(new Font(Font.DIALOG, Font.BOLD, 13));
+                g2d.drawString("Thread One Status:", 50, 70);
+                g2d.drawString("Thread Two Status:", 50, 120);
+                g2d.drawString(taskOne == null ? "" : taskOne.getStatus(), 60, 95);
+                g2d.drawString(taskTwo == null ? "" : taskTwo.getStatus(), 60, 145);
                 String tempOne = lockOne.getOwner() == null ? "None" : lockOne.getOwner().getName();
                 String tempTwo = lockTwo.getOwner() == null ? "None" : lockTwo.getOwner().getName();
                 g2d.drawString("Lock One State, Held By: " + tempOne, 50, 300);
@@ -165,10 +157,9 @@ public class Deadlock {
                 g2d.drawString("Thread 1 State: " + t1.getState(), 500, 300);
                 g2d.drawString("Thread 2 State: " + t2.getState(), 500, 350);
                 if (t1.getState() == Thread.State.WAITING && t2.getState() == Thread.State.WAITING) {
-                    Font f = new Font("MonoSpaced", 1, 30);
-                    g2d.setFont(f);
+                    g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
                     g2d.setColor(Color.red);
-                    g2d.drawString("THREAD 1 AND 2 DEADLOCKED!", 200, 200);
+                    g2d.drawString("THREAD 1 AND 2 DEADLOCKED!", 200, 220);
                 }
             }
         };
@@ -241,8 +232,10 @@ public class Deadlock {
 
             panel.add(startOne);
             panel.add(startTwo);
+            panel.add(Box.createHorizontalStrut(20));
             panel.add(stopOne);
             panel.add(stopTwo);
+            panel.add(Box.createHorizontalStrut(20));
             panel.add(toggleLockOne);
             panel.add(toggleLockTwo);
 
