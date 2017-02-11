@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author root
+ * @author root 
  */
 public class Deadlock {
 
@@ -60,7 +60,7 @@ public class Deadlock {
         }
     }
 
-    abstract class ThreadParent {
+    static abstract class ThreadParent {
 
         protected volatile boolean exit = false;
         protected String status = "not started";
@@ -74,7 +74,6 @@ public class Deadlock {
         public void stop() {
             exit = true;
         }
-
     }
 
     static class TaskOne extends ThreadParent implements Runnable {
@@ -86,12 +85,12 @@ public class Deadlock {
                     status = "Attempting to access lock one..";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
-                    status += lOne ? " Lock One Accessed - " : " DEADLOCKED";
+                    status += lOne ? " Lock One Accessed - " : " FAILED ";
                     Thread.sleep(2000);
                     status += "Attempting to access lock two..";
                     lockTwo.lock();
                     lTwo = lockTwo.isLocked();
-                    status += lTwo ? " Lock Two Accessed" : " DEADLOCKED";
+                    status += lTwo ? " Lock Two Accessed" : " FAILED ";
                     while (!exit) {
                     }
                 }
@@ -117,12 +116,12 @@ public class Deadlock {
                     status = "Attempting to access lock two..";
                     lockTwo.lock();
                     lTwo = lockTwo.isLocked();
-                    status += lTwo ? " Lock Two Accessed - " : " DEADLOCKED";
+                    status += lTwo ? " Lock Two Accessed - " : " FAILED ";
                     Thread.sleep(2000);
                     status += "Attempting to access lock one..";
                     lockOne.lock();
                     lOne = lockOne.isLocked();
-                    status += lOne ? " Lock One Accessed" : " DEADLOCKED";
+                    status += lOne ? " Lock One Accessed" : " FAILED ";
                     while (!exit) {
                     }
                 }
