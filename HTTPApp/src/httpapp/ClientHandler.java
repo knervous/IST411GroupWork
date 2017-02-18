@@ -79,6 +79,10 @@ public class ClientHandler implements Runnable{
             This allows you to read more from the line.
             Would like want to move GET into a method so the entire length 
             would be processed
+            
+            I agree, I think that we should make GET its own method.
+            The assignment needs us to Post strings to make a diary, and then GET
+            the entire page. - Dan
             */
             
         } catch (Exception e) {
