@@ -6,22 +6,36 @@
 package httpapp;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
  * @author Brian
  */
 public class HTTPClient implements Runnable{
-    
+    private String diaryEntry;
+            
     public HTTPClient(){
-        
+        try{
+            FileWriter fw = new FileWriter("diary.txt", true);
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Diary Entry: ");
+            diaryEntry = scanner.nextLine();
+            fw.write(diaryEntry + "\n");
+            fw.flush();
+            fw.close();
+          
+            }
+         catch(IOException e){
+         //
+        }
     }
-    
     
     @Override
     public void run(){
