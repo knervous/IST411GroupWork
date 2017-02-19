@@ -64,10 +64,21 @@ public class ClientHandler implements Runnable{
                 String httpQueryString = tokenizer.nextToken();
                 StringBuilder responseBuffer = new StringBuilder();
                 responseBuffer
-                        .append("<html><h1>WebServer Home Page....</h1><br>")
-                        .append("<b>Welcome to my web server!</b><BR>")
-                        .append("</html>");
+                        .append("<html><head><title>Best Page in the Universe</title></head><h1>WebServer Home Page....</h1><br>")
+                        .append("<body><b>Welcome to my web server!</b><BR>");
+                String buttonForm = "<form action=\"\" method=\"post\">\n" +
+                                "    <button name=\"postButton\" value=\"post\">Click me!</button>\n" +
+                                "</form>";
+                responseBuffer.append(buttonForm).append("</body></html>");
                 sendResponse(socket, 200, responseBuffer.toString());
+            }
+            else if(httpMethod.equals("POST")){
+                StringBuilder responseBuffer = new StringBuilder();
+                responseBuffer.append("<html><head><title>You did it!</title></head><body>")
+                        .append("<font size=\"12\">You pressed post!</font>")
+                        .append("</body></html>");
+                sendResponse(socket, 200, responseBuffer.toString());
+                
             }
             else{
                 System.out.println("The HTTP method is not recognized");
