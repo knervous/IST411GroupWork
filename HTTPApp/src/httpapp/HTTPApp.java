@@ -22,7 +22,7 @@ public class HTTPApp {
         Thread clientThread = new Thread(client);
         
         serverThread.start();
-        clientThread.start();
+        //clientThread.start();
 //        while (server.getServerSocket() == null){
 //            clientThread.start();
 //            break;

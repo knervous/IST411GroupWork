@@ -19,24 +19,8 @@ import java.util.Scanner;
  * @author Brian
  */
 public class HTTPClient implements Runnable{
-    private String diaryEntry;
             
-    public HTTPClient(){
-        try{
-            FileWriter fw = new FileWriter("diary.txt", true);
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Diary Entry: ");
-            diaryEntry = scanner.nextLine();
-            fw.write(diaryEntry + "\n");
-            fw.flush();
-            fw.close();
-          
-            }
-         catch(IOException e){
-         //
-        }
-    }
-    
+
     @Override
     public void run(){
         System.out.println("CLIENT: HTTP Client Started");
