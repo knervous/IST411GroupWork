@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
                         + "     dataType: 'text/html',"
                         + "     timeout: 2500,"
                         + "     success: function(data){"
-                                    +"console.dir(data);"
+                        + "console.dir(data);"
                         + "         $(\"#diaryContents\").append(data);},"
                         + "     error: function(data){console.log('something went wrong');"
                         + "             location.reload();},"
@@ -114,40 +114,30 @@ public class ClientHandler implements Runnable {
                 responseBuffer.append("</body></html>");
                 sendResponse(socket, 200, responseBuffer.toString());
             } else if (httpMethod.equals("POST")) {
-                    System.out.println("POST HITTING");
+                System.out.println("POST HITTING");
                 StringBuilder responseBuffer = new StringBuilder();
                 String line;
                 StringBuilder body = new StringBuilder();
                 while (!in.readLine().isEmpty()) {
                 }
-                while((line = in.readLine())!=null)
-                {
+                while ((line = in.readLine()) != null) {
                     body.append(line);
-                    if(line.isEmpty())
+                    if (line.isEmpty()) {
                         break;
+                    }
                 }
                 System.out.println("out of fiorst");
-                if(body != null)
-                {
+                if (body != null) {
                     StringBuilder addEntry = new StringBuilder();
                     addEntry.append("\r\n");
                     addEntry.append("Date: " + new Date() + "\r\n");
                     addEntry.append("Entry: " + body.toString() + "\r\n");
-                    
-//                    try (PrintWriter fileout = new PrintWriter(new FileOutputStream(new File("diary.txt")),true)) {
-//                            fileout.append(addEntry.toString());
-//                            fileout.flush();
-//                        }
-                    //Here true is to append the content to file
-    	FileWriter fw = new FileWriter(new File("diary.txt"),true);
-    	//BufferedWriter writer give better performance
-    	BufferedWriter bw = new BufferedWriter(fw);
-    	bw.append(addEntry.toString());
-    	//Closing BufferedWriter Stream
-    	bw.close();
-                    //responseBuffer.append(addEntry.toString());
+
+                    FileWriter fw = new FileWriter(new File("diary.txt"), true);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.append(addEntry.toString());
+                    bw.close();
                 }
-                //sendResponse(socket, 200, "Yup");
 
             } else {
                 System.out.println("The HTTP method is not recognized");
@@ -166,7 +156,7 @@ public class ClientHandler implements Runnable {
              */
 
         } catch (Exception e) {
-            
+
         }
     }
 
