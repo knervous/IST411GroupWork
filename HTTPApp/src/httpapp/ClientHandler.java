@@ -117,6 +117,7 @@ public class ClientHandler implements Runnable {
                 System.out.println("POST HITTING");
                 StringBuilder responseBuffer = new StringBuilder();
                 String line;
+                
                 StringBuilder body = new StringBuilder();
                 while (!in.readLine().isEmpty()) {
                 }
@@ -126,7 +127,6 @@ public class ClientHandler implements Runnable {
                         break;
                     }
                 }
-                System.out.println("out of fiorst");
                 if (body != null) {
                     StringBuilder addEntry = new StringBuilder();
                     addEntry.append("\r\n");
