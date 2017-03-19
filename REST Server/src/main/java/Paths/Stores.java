@@ -40,11 +40,12 @@ public class Stores {
         return nearestStoresXml;
     }
     
-    @Path("/{store}/items/add/{id}/{quantity}")
+    @Path("{store}/items/add/{id}")
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
     public <ShoppingCart extends Object, Account extends Object> JsonObject addItemToCart(@Context HttpServletRequest request, 
-                                                        @PathParam("store") int store, @PathParam("id") long id, @PathParam("quantity") int quantity)
+                                                        @PathParam("store") int store, @PathParam("id") long id, String quantity)
     {
         //Placeholder for shopping cart for current session
         ShoppingCart shoppingCart = (ShoppingCart)request.getSession().getAttribute("shoppingCart");
