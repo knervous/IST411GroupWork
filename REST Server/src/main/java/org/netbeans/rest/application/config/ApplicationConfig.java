@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author root
  */
-@javax.ws.rs.ApplicationPath("")
+@javax.ws.rs.ApplicationPath("rest")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -29,7 +29,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(Servlets.Homepage.class);
+        resources.add(Paths.Homepage.class);
+        resources.add(Paths.Search.class);
+        resources.add(Paths.Stores.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
     }
     
