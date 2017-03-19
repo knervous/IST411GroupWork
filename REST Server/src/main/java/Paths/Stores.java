@@ -6,9 +6,12 @@
 package Paths;
 
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,15 +23,14 @@ import javax.ws.rs.core.MediaType;
 public class Stores {
 
     @GET
-    @Path("")
     @Produces(MediaType.TEXT_HTML)
     public String getPage() {
         //Placeholder for actual HTML response with webpage.
         return "<html>List of Stores: <br><div id=\"storeTable\"></div></html>";
     }
     
+    @Path("list")
     @GET
-    @Path("")
     @Produces(MediaType.APPLICATION_XML)
     public <Account extends Object> String getList(@Context HttpServletRequest request) {
         //Placeholder for getting session info based on location or something
@@ -38,8 +40,8 @@ public class Stores {
         return nearestStoresXml;
     }
     
+    @Path("/{store}/items/add/{id}/{quantity}")
     @PUT
-    @Path("/stores/{store}/items/add/{id}/{quantity}")
     @Produces(MediaType.APPLICATION_JSON)
     public <ShoppingCart extends Object, Account extends Object> JsonObject addItemToCart(@Context HttpServletRequest request, 
                                                         @PathParam("store") int store, @PathParam("id") long id, @PathParam("quantity") int quantity)
@@ -68,11 +70,11 @@ public class Stores {
         
     }
     
+    @Path("{store}/items/delete/{cartItemId}")
     @DELETE
-    @Path("/stores/{store}/items/add/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public <ShoppingCart extends Object, Account extends Object> JsonObject deleteItemFromCart(@Context HttpServletRequest request, 
-                                                        @PathParam("cartItemId") long id)
+                                                       @PathParam("store") int store, @PathParam("cartItemId") long id)
     {
         //Placeholder for shopping cart for current session
         ShoppingCart shoppingCart = (ShoppingCart)request.getSession().getAttribute("shoppingCart");
@@ -96,5 +98,6 @@ public class Stores {
         return status;
         
     }
+    
 
 }
