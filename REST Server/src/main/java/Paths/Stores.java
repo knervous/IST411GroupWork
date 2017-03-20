@@ -47,6 +47,7 @@ public class Stores {
     public <ShoppingCart extends Object, Account extends Object> JsonObject addItemToCart(@Context HttpServletRequest request, 
                                                         @PathParam("store") int store, @PathParam("id") long id, String quantity)
     {
+        System.out.println("Debug quantity: " + quantity);
         //Placeholder for shopping cart for current session
         ShoppingCart shoppingCart = (ShoppingCart)request.getSession().getAttribute("shoppingCart");
         
