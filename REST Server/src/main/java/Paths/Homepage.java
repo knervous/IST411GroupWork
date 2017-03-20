@@ -21,12 +21,6 @@ import javax.ws.rs.core.MediaType;
 public class Homepage {
 
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String sayPlainTextHello() {
-        return "home";
-    }
-
-    @GET
     @Produces(MediaType.TEXT_XML)
     public String sayXMLHello() {
         return "<?xml version=\"1.0\"?>" + "<home> home" + "</home>";
