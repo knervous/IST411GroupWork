@@ -1,7 +1,109 @@
-@(message: String)
+@(message: String, user: User)
 
-<div>
-    <h1>
-        @message
-    </h1>
+<div class="container-fluid pull-left" style="width: 100%">
+    <div class="row" style="margin-bottom: 10px;
+        margin-top: 15px;">
+        <div class="col-sm-3">
+            <label><font color="red" size="2">*</font>User Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getUsername" id="username" placeholder="Enter Username" required autofocus/>
+        </div>
+        <div class="col-sm-3">
+            <label><font color="red">*</font>Password</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getPassword" id="password" placeholder="Enter Password" required>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;
+        margin-top: 15px;">
+        <div class="col-sm-3">
+            <label>First Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getFirstName" id="firstname" placeholder="Enter First Name"/>
+        </div>
+        <div class="col-sm-3">
+            <label>Last Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getLastName" id="lastname" placeholder="Enter Last Name">
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;
+        margin-top: 15px;">
+        <div class="col-sm-3">
+            <label>Email</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getEmail" id="email" placeholder="Enter Email"/>
+        </div>
+        <div class="col-sm-3">
+            <label>Comments</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getComments" id="comments" placeholder="Enter Comments">
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;
+        margin-top: 15px;">
+        <div class="col-sm-3">
+            <label>Gender</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" value="@user.getGender" id="gender" placeholder="Enter Gender"/>
+        </div>
+    </div>
 </div>
+<input style="display: none" value="@user.getUserId" id="userId"/>
+<center>
+    <input class="btn btn-lg btn-primary btn-block" style="width: 230px" type="button" id="updateUser" value="Update"></input>
+    <input class="btn btn-lg btn-primary btn-block" style="width: 230px" type="button" id="deleteUser" value="Delete"></input>
+</center>
+<script>
+
+
+    $("#updateUser").click(() => {
+        let user = {
+            username: $("#username").val(),
+            password: $("#password").val(),
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            email: $("#email").val(),
+            comments: $("#comments").val(),
+            gender: $("#gender").val()
+        };
+
+    $.ajax({
+                url: "/edit/" + JSON.stringify(user),
+                type: "PUT",
+                data: {user: JSON.stringify(user)},
+                success: function (data) {
+                    console.dir(data);
+                    alert('Successfully updated user!')
+                },
+                error: data => {
+                console.log('error happened');
+                }
+
+    })
+    });
+
+    $("#deleteUser").click(() => {
+            console.log($("#userId").val())
+    $.ajax({
+                url: "/delete/" + $("#userId").val(),
+                type: "POST",
+                success: function (data) {
+                    console.dir(data);
+                    alert('Successfully deleted user! :( :(')
+                },
+                error: data => {
+                console.log('error happened');
+    }
+
+    })
+    });
+
+</script>

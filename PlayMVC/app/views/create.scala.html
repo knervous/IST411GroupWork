@@ -43,27 +43,49 @@
             <input class="form-control" id="comments" placeholder="Enter Comments">
         </div>
     </div>
+    <div class="row" style="margin-bottom:10px; margin-top:15px;">
+        <div class="col-sm-3">
+            <label>Gender</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="gender" placeholder="Enter Gender"/>
+        </div>
+    </div>
 </div>
 <center>
     <input class="btn btn-lg btn-primary btn-block" style="width: 230px" type="button" id="addNewUser" value="Create"></input>
 </center>
 
 <script>
-    let user = {
-        username: $("#username").val(),
-        password: $("#password").val(),
-        firstname: $("#firstname").val(),
-        lastname: $("#lastname").val(),
-        email: $("#email").val(),
-        comments: $("#comments").val()
-    }
+
+
     $("#addNewUser").click(()=>{
+        let user = {
+            username: $("#username").val(),
+            password: $("#password").val(),
+            firstname: $("#firstname").val(),
+            lastname: $("#lastname").val(),
+            email: $("#email").val(),
+            comments: $("#comments").val(),
+            gender: $("#gender").val()
+        };
+        console.dir(user);
+        console.log(JSON.stringify(user));
         $.ajax({
-                url: "/create",
+                url: "/create/"+JSON.stringify(user),
                 type: "POST",
                 data: {user: JSON.stringify(user)},
                 success: function (data) {
-                    console.dir(data);
+                    $.ajax({
+                        url: '/login/' + $("#username").val() + "/" + $("#password").val(),
+                        type: 'POST',
+                        success : () =>{
+                        window.location.href = "/";
+                        },
+                            error : () => {
+                                alert('Error')
+                            }
+                        })
                 },
                 error: data => {
                     console.log('error happened');

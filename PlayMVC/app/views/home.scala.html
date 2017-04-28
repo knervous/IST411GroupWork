@@ -1,7 +1,11 @@
-@(message: String)
+@(message: String, loggedInAs: String, userCount: Int)
 
 <div>
     <h1>
         @message
     </h1>
+
+    <h2>You are currently logged in as: @loggedInAs</h2>
+    <br/>
+    <h2>And there are @userCount active users, wow!</h2>
 </div>

@@ -1,0 +1,26 @@
+@(message: String)
+
+<div style="margin-top: 50px">
+    <center>Please enter your credentials</center>
+    <input style="width: 250px; margin-top: 20px" class="form-control" placeholder="Enter username" id="username"/>
+    <input style="width: 250px; margin-top: 20px" class="form-control" placeholder="Enter password" id="password"/>
+    <input class="btn btn-lg btn-primary btn-block" style="width: 230px; margin-top: 20px" type="button" id="login" value="Login"></input>
+</div>
+
+<script>
+
+        $("#login").click((e)=>{
+            var url =  '/login/' + $("#username") + "/" + $("#password");
+            console.log(url)
+            $.ajax({
+                url: '/login/' + $("#username").val() + "/" + $("#password").val(),
+                type: 'POST',
+                success : () =>{
+                    window.location.href = "/";
+                },
+                error : () => {
+                    alert('Error')
+                }
+            })
+        })
+</script>

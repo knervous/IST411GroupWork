@@ -7,14 +7,15 @@ GET     /                           controllers.Application.index
 GET     /list                       controllers.Application.list
 GET     /create                     controllers.Application.create
 GET     /edit                       controllers.Application.edit
+GET     /login                      controllers.Application.login
 
 
 
 # Ajax Calls
-POST        /create                   controllers.Ajax.create
-POST        /edit                     controllers.Ajax.edit
-DELETE      /delete/:id               controllers.Ajax.delete(id: Integer)
-
+POST        /create/:user            controllers.Ajax.create(user: String)
+PUT         /edit/:user              controllers.Ajax.update(user: String)
+POST      /delete/:id                controllers.Ajax.delete(id: Integer)
+POST     /login/:user/:pass          controllers.Ajax.login(user: String, pass: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
