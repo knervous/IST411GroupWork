@@ -1,0 +1,106 @@
+swagger: "2.0"
+info:
+  description: "Delivery Mercenaries"
+  version: 1.0.0
+  title: Delivery Mercenaries YAML
+  termsOfService: 
+  contact:
+    email:
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: /MavenServer
+tags:
+schemes:
+  - http
+paths:
+  /home:
+    get:
+      operationId: sayXMLHello
+      produces:
+        - application/xml
+      parameters:
+      responses:
+      security:
+	get:
+      operationId: sayJSONHello
+      produces:
+        - application/json
+      parameters:
+      responses:
+      security:  
+	get:
+      operationId: getHomepage
+      produces:
+        - text/html
+        - application/json
+      parameters:
+      responses:
+      security:
+	  
+  "/search/zip/{zip}":
+    get:
+      operationId: getZip
+      produces:
+        - application/xml
+      parameters:
+        - name: zip
+          in: path
+          description:
+          required: true
+          type: integer
+          format: int64
+      responses:
+      security:
+	
+   "/stores/{store}/items/add/{id}:
+    put:
+      operationId: addItemToCart
+      consumes:
+        - text
+      produces:
+        - application/json
+      parameters:
+        - name: store
+          in: path
+          description:
+          required: true
+          type: integer
+          format: int64
+        - name: id
+          in: path
+          description:
+          required: false
+          type: integer
+          format: int64
+        - name: quantity
+          in: formData
+          description:
+          required: false
+          type: string
+      responses:
+      security:
+   "/stores/{store}/items/delete/{cartItemId}:
+    delete:
+      operationId: deleteItemFromCart
+      produces:
+        - application/json
+      parameters:
+        - name: store
+          in: path
+          description:
+          required: true
+          type: integer
+          format: int64
+        - name: cartItemId
+          in: path
+          description:
+          required: false
+          type: integer
+          format: int64
+      responses:
+      security:
+  
+externalDocs:
+  description: 
+  url: 

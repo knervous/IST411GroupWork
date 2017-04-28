@@ -1,0 +1,73 @@
+#%RAML 0.8
+title: MavenServer
+baseUri: http://example.com
+/home: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          text/html: 
+/search: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          application/xml: 
+  /zip/{zip}: 
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/xml: 
+  /subfolder123/{id}: 
+    uriParameters: 
+      id: 
+        type: integer
+        required: true
+    post: 
+      body: 
+        application/json: 
+      responses: 
+        200: 
+          body: 
+            wildcard: 
+/stores: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          text/html: 
+  /list: 
+    get: 
+      responses: 
+        200: 
+          body: 
+            application/xml: 
+  /{store}/items/add/{id}: 
+    uriParameters: 
+      store: 
+        type: integer
+        required: true
+      id: 
+        type: integer
+        required: true
+    put: 
+      body: 
+        text/plain: 
+      responses: 
+        200: 
+          body: 
+            application/json: 
+  /{store}/items/delete/{cartItemId}: 
+    uriParameters: 
+      store: 
+        type: integer
+        required: true
+      cartItemId: 
+        type: integer
+        required: true
+    delete: 
+      responses: 
+        200: 
+          body: 
+            application/json: 

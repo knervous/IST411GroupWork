@@ -29,10 +29,14 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(Paths.Homepage.class);
-        resources.add(Paths.Search.class);
-        resources.add(Paths.Stores.class);
+        resources.add(com.paths.Homepage.class);
+        resources.add(com.paths.Search.class);
+        resources.add(com.paths.Stores.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
     }
     
 }
+
+
+
+

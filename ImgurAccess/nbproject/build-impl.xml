@@ -1234,7 +1234,7 @@ is divided into following sections:
         </copy>
     </target>
     <target depends="init,-javadoc-build" if="netbeans.home" name="-javadoc-browse" unless="no.javadoc.preview">
-        <nbbrowse file="${dist.javadoc.dir}/index.html"/>
+        <nbbrowse file="${dist.javadoc.dir}/test-services.html"/>
     </target>
     <target depends="init,-javadoc-build,-javadoc-browse" description="Build Javadoc." name="javadoc"/>
     <!--

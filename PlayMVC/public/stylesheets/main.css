@@ -1,0 +1,50 @@
+body {
+    background: dodgerblue;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+.navbar .navbar-nav {
+    margin: auto;
+    padding: 12px 5px;
+}
+.nav-text {
+    font-size: 13px;
+    color: black;
+}
+
+a {
+    color: white;
+    font-size: x-large;
+}
+
+.centerForm{
+    background: lightblue;
+    margin-top: 50px;
+    margin-left: 20%;
+    margin-right: 20%;
+    min-height: 700px;
+    max-height: 700px;
+    overflow: scroll;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+centerForm::-webkit-scrollbar-thumb{
+    display:none;
+}
+
+::-webkit-scrollbar {
+    color: inherit;
+}
+::-webkit-scrollbar-thumb {
+    background-color: grey;
+}
+
+
+.hoverRow:hover{
+    background: deepskyblue;
+    color: white;
+    font-weight: bold;
+}

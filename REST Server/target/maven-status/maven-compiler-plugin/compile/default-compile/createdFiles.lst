@@ -1,4 +1,1 @@
-org\netbeans\rest\application\config\ApplicationConfig.class
-Paths\Search.class
-Paths\Stores.class
-Paths\Homepage.class
+org\netbeans\rest\application\config\SwaggerTestApplication.class

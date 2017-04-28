@@ -1,0 +1,74 @@
+@(message: String)
+
+<div class="container-fluid pull-left" style="width:100%">
+    <div class="row" style="margin-bottom:10px; margin-top:15px;">
+        <div class="col-sm-3">
+            <label><font color="red" size="2">*</font>User Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="username" placeholder="Enter Username" required autofocus/>
+        </div>
+        <div class="col-sm-3">
+            <label><font color="red">*</font>Password</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="password" placeholder="Enter Password" required>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:10px; margin-top:15px;">
+        <div class="col-sm-3">
+            <label>First Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="firstname" placeholder="Enter First Name"/>
+        </div>
+        <div class="col-sm-3">
+            <label>Last Name</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="lastname" placeholder="Enter Last Name">
+        </div>
+    </div>
+    <div class="row" style="margin-bottom:10px; margin-top:15px;">
+        <div class="col-sm-3">
+            <label>Email</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="email" placeholder="Enter Email"/>
+        </div>
+        <div class="col-sm-3">
+            <label>Comments</label>
+        </div>
+        <div class="col-sm-3">
+            <input class="form-control" id="comments" placeholder="Enter Comments">
+        </div>
+    </div>
+</div>
+<center>
+    <input class="btn btn-lg btn-primary btn-block" style="width: 230px" type="button" id="addNewUser" value="Create"></input>
+</center>
+
+<script>
+    let user = {
+        username: $("#username").val(),
+        password: $("#password").val(),
+        firstname: $("#firstname").val(),
+        lastname: $("#lastname").val(),
+        email: $("#email").val(),
+        comments: $("#comments").val()
+    }
+    $("#addNewUser").click(()=>{
+        $.ajax({
+                url: "/create",
+                type: "POST",
+                data: {user: JSON.stringify(user)},
+                success: function (data) {
+                    console.dir(data);
+                },
+                error: data => {
+                    console.log('error happened');
+                }
+
+        })
+    });
+</script>
