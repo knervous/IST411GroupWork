@@ -46,8 +46,8 @@ public class Application extends Controller {
     }
 
     public static Result login(){
-        Html content = login.render("login");
-        return ok(index.render(getSessionName(), content));
+        Html content = login.render("login"); //Login page
+        return ok(index.render(getSessionName(), content)); //Re
     }
 
     private static String getSessionName(){
@@ -58,6 +58,13 @@ public class Application extends Controller {
             DBController db = new DBController();
             return db.getFullName(id);
         }
+    }
+
+    public static Result logout(){
+        session().clear();
+        ArrayList<User> userList = new DBController().getList();
+        Html content = list.render(userList);
+        return ok(index.render(getSessionName(), content));
     }
 
 }

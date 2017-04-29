@@ -8,7 +8,7 @@ GET     /list                       controllers.Application.list
 GET     /create                     controllers.Application.create
 GET     /edit                       controllers.Application.edit
 GET     /login                      controllers.Application.login
-
+GET     /logout                     controllers.Application.logout
 
 
 # Ajax Calls
